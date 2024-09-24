@@ -10,4 +10,4 @@
 
 ### Flow App
 <hr>
-<img src="drum flowchart.png">
+<p align="center"><img src="drum flowchart.png"></p>
