@@ -13,31 +13,39 @@ app.use(express.json())
 //default URL = URL health check
 app.get('/health-check', (req, res) => {
     res.status(200).json({
-        status: true,
-        message: "Ping Successfully!",
-        data: []
+        "status": true,
+        "message": "Ping Successfully!",
+        "data": []
     })
 })
 
-app.get('/', (req, res) => {
-    res.status(200).json({
-        status: true,
-        message: "Ping Successfully!",
-        data: []
-    })
+app.get('/', async (req, res) => {
+    try{
+        res.status(200).json({
+            "status": true,
+            "message": "Ping Successfully!",
+            "data": []
+        })
+    } catch (err) {
+        res.status(404).json({
+            "status": false,
+            "message": "URL Not Found",
+            "data" : []
+        })
+    }
 })
+
+//define routes
+app.use('/api/v1', router);
 
 //middleware for url not found
 app.use((req, res, next) => {
     res.status(404).json({
-        status: false,
-        message: "URL Not Found",
-        data: []
+        "status": false,
+        "message": "URL Not Found",
+        "data": []
     });
 });
-
-//define routes
-app.use('/api', router);
 
 app.listen(port, () => {
     const url = `http://localhost:${port}`;
