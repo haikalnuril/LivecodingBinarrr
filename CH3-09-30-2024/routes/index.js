@@ -14,18 +14,18 @@ const cars = JSON.parse(
 router.get("/cars", (req, res) => {
     try {
         res.status(200).json({
-            status: true,
-            message: "Successfully!",
-            totalData: cars.length,
-            data: {
+            "status": true,
+            "message": "Successfully!",
+            "totalData": cars.length,
+            "data": {
                 cars,
             },
         });
     } catch (err) {
         res.status(500).json({
-            status: false,
-            message: "Internal server error",
-            data: {},
+            "status": false,
+            "message": "Internal server error",
+            "data": {},
         });
     }
 });
@@ -39,15 +39,38 @@ router.post("/cars", (req, res) => {
         JSON.stringify(cars),
         (err) => {
             res.status(201).json({
-                status: true,
-                message: "Successfully!",
-                totalData: cars.length,
-                data: {
+                "status": true,
+                "message": "Successfully!",
+                "totalData": cars.length,
+                "data": {
                     cars,
                 },
             });
         }
     );
+});
+
+router.get("/cars/:id", (req, res) => {
+    const id = req.params.id
+
+    const findCar = cars.find(i => i.id === id)
+    
+    if(!findCar){
+        return res.status(404).json({
+            "status": false,
+            "message": `Content Not Found from ${id}`,
+            "data": null,
+        });
+    }
+    res.status(200).json({
+        "status": true,
+        "message": "Successfully!",
+        "isSuccess": true,
+        "data": {
+            findCar,
+        },
+    });
+
 });
 
 //export router
