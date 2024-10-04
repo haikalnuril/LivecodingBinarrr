@@ -70,8 +70,75 @@ router.get("/cars/:id", (req, res) => {
             findCar,
         },
     });
-
 });
+
+router.patch("/cars/:id", (req, res) => {
+    const {model, year, type} = req.body
+    
+    const id = req.params.id
+    const findCar = cars.find(i => i.id === id)
+
+    const cariIndex = cars.findIndex((findCar) => findCar.id === id)
+
+
+    cars[cariIndex] = { ...cars[cariIndex], ...req.body}
+
+    if(!findCar){
+        return res.status(404).json({
+            "status": false,
+            "message": `Content Not Found from ${id}`,
+            "data": null,
+        });
+    }
+
+    const newFindCar = cars.find(i => i.id === id)
+
+    fs.writeFile(
+        `${PUBLIC_DIRECTORY}/data/cars.json`,
+        JSON.stringify(cars),
+        (err) => {
+            res.status(201).json({
+                "status": true,
+                "message": "Successful to update your data!",
+                "totalData": cars.length,
+                "data": {
+                    newFindCar,
+                },
+            });
+        }
+    );  
+})
+
+router.delete('/cars/:id', (req, res) => {
+    const id = req.params.id;
+
+    const findCar = cars.find(i => i.id === id)
+
+    const cariIndex = cars.findIndex((findCar) => findCar.id === id)
+
+    cars.splice(cariIndex, 1)
+
+    if(!findCar){
+        return res.status(404).json({
+            "status": false,
+            "message": `Content Not Found from ${id}`,
+            "data": null,
+        });
+    }
+
+    fs.writeFile(
+        `${PUBLIC_DIRECTORY}/data/cars.json`,
+        JSON.stringify(cars),
+        (err) => {
+            res.status(201).json({
+                "status": true,
+                "message": "Successful to delete your data!",
+                "totalData": cars.length,
+                "data": null,
+            });
+        }
+    );  
+})
 
 //export router
 module.exports = router;
