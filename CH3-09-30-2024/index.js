@@ -1,5 +1,6 @@
 const express = require("express");
 const router = require("./routes");
+const productRouter = require('./routes/productRouter')
 
 const app = express();
 const port = 3000;
@@ -37,6 +38,7 @@ app.get('/', async (req, res) => {
 
 //define routes
 app.use('/api/v1', router);
+app.use('/api/v2/products', productRouter)
 
 //middleware for url not found
 app.use((req, res, next) => {
@@ -49,5 +51,5 @@ app.use((req, res, next) => {
 
 app.listen(port, () => {
     const url = `http://localhost:${port}`;
-    console.log(`Click to open: \x1b[36m%s\x1b[0m`, url);
+    console.log(`Click to open:`, url);
 });

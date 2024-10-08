@@ -1,0 +1,6 @@
+const path = require("path")
+
+module.exports = {
+    'config' : path.resolve('config', 'database.js')
+    // if we still use json we cant hide using ENV
+}

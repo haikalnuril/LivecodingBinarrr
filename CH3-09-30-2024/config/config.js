@@ -1,19 +1,22 @@
-{
-    "development": {
-        "username": "postgres",
-        "password": "haikalteng12",
-        "database": "fsw2",
-        "host": "127.0.0.1",
+const dotenv = require("dotenv")
+dotenv.config()
+
+module.exports = {
+        "development": {
+        "username": process.env.DB_USERNAME,
+        "password": process.env.DB_PASSWORD,
+        "database": process.env.DB_DATABASE,
+        "host": process.env.HOST,
         "dialect": "postgres"
     },
-    "test": {
+        "test": {
         "username": "root",
         "password": null,
         "database": "database_test",
         "host": "127.0.0.1",
         "dialect": "mysql"
     },
-    "production": {
+        "production": {
         "username": "root",
         "password": null,
         "database": "database_production",
