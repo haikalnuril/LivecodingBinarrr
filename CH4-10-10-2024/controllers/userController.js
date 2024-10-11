@@ -1,5 +1,7 @@
 const { User } = require("../models");
 
+const imagekit = require("../lib/imagekit");
+
 // Function for get all user data
 async function getAllUser(req, res) {
     try {
@@ -125,22 +127,36 @@ async function UpdateUserById(req, res) {
 }
 
 async function createUser(req, res) {
-    console.log(req.file);
-    const newUser = req.body;
-
     try {
-        await User.create({
-            ...newUser, 
-            photoProfile: req.file.path
+        let uploadedFile = null;
+
+        if (req.file) {
+            // Read the file buffer
+            const fileBuffer = req.file.buffer;
+            const fileName = req.file.originalname;
+
+            // Upload to ImageKit
+            uploadedFile = await imagekit.upload({
+                file: fileBuffer,
+                fileName: fileName,
+            });
+        }
+
+        const newUser = req.body;
+
+        const createdUser = await User.create({
+            ...newUser,
+            photoProfile: uploadedFile ? uploadedFile.url : null
         });
 
-        res.status(200).json({
+        res.status(201).json({
             status: "Success",
             message: "Successfully added user data",
             isSuccess: true,
-            data: { newUser },
+            data: { createdUser },
         });
     } catch (error) {
+        console.error('Error in createUser:', error);
         res.status(500).json({
             status: "Failed",
             message: "Failed to add user data",
