@@ -128,25 +128,35 @@ async function UpdateUserById(req, res) {
 
 async function createUser(req, res) {
     try {
-        let uploadedFile = null;
+        let uploadedFiles = [];
 
-        if (req.file) {
-            // Read the file buffer
-            const fileBuffer = req.file.buffer;
-            const fileName = req.file.originalname;
+        if (req.files && req.files.length > 0) {
+            for (let file of req.files) {
+                const split = file.originalname.split(".")
+                // imam.pdf = ['imam', 'pdf'] = length 2 
+                const ext = split[split.length - 1]
+                const filename = split[0]
+                const fileBuffer = file.buffer;
+                const fileName = `Profile-${filename}-${Date.now()}.${ext}`
 
-            // Upload to ImageKit
-            uploadedFile = await imagekit.upload({
-                file: fileBuffer,
-                fileName: fileName,
-            });
+                // Upload to ImageKit
+                const uploadedFile = await imagekit.upload({
+                    file: fileBuffer,
+                    fileName: fileName,
+                });
+
+                uploadedFiles.push(uploadedFile.url);
+            }
         }
 
         const newUser = req.body;
 
+        // This one is for saving the uploaded files to the database and separate them with comma
+        const photosString = uploadedFiles.length > 0 ? uploadedFiles.join(',') : null;
+
         const createdUser = await User.create({
             ...newUser,
-            photoProfile: uploadedFile ? uploadedFile.url : null
+            photoProfile: photosString
         });
 
         res.status(201).json({

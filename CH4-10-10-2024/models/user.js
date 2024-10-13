@@ -17,7 +17,20 @@ module.exports = (sequelize, DataTypes) => {
             lastName: DataTypes.STRING,
             age: DataTypes.INTEGER,
             phoneNumber: DataTypes.STRING,
-            photoProfile: DataTypes.TEXT,
+            photoProfile: {
+                type: DataTypes.TEXT,
+                get() {
+                    const rawValue = this.getDataValue('photoProfile');
+                    return rawValue ? rawValue.split(',') : [];
+                },
+                set(value) {
+                    if (Array.isArray(value)) {
+                        this.setDataValue('photoProfile', value.join(','));
+                    } else {
+                        this.setDataValue('photoProfile', value);
+                    }
+                }
+            }
         },
         {
             sequelize,

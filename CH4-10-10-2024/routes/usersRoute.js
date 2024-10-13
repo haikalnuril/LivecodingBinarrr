@@ -17,6 +17,6 @@ router.delete("/:id", userController.deleteUserById);
 router.patch("/:id", userController.UpdateUserById);
 
 // API for create new user data
-router.post("/", upload.single("photoProfile"),userController.createUser);
+router.post("/", upload.array("photos", 5),userController.createUser);
 
 module.exports = router;
