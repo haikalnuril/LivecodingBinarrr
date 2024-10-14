@@ -4,8 +4,9 @@ const usersRoute = require("./routes/usersRoute");
 const carsRoute = require("./routes/carsRoute");
 const sparepartsRoute = require("./routes/sparepartsRoute");
 const driverRoutes = require("./routes/driverRoute");
-const dotenv = require("dotenv")
-dotenv.config()
+const adminRoutes = require("./routes/adminRoute");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -32,6 +33,28 @@ app.get("/", async (req, res) => {
         });
     }
 });
+
+app.use(express.static(`${__dirname}/public`));
+
+// View Engine
+app.set("view engine", "ejs");
+// app.get("/dashboard/admin", async (req, res) => {
+//     try {
+//     const response = await fetch("http://localhost:3000/api/v1/users");
+//     const users = await response.json();
+//     console.log(users)
+//     res.render("index", {
+//         title: "Dashboard Admin",
+//         subTitle: "Welcome to Admin Dashboard",
+//         users: users.data.users,
+//     });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
+
+// Admin dashboard route
+app.use("/dashboard/admin", adminRoutes);
 
 // Routes
 app.use("/api/v1/users", usersRoute);

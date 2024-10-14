@@ -1,0 +1,14 @@
+<table>
+    <th>name</th>
+    <th>photo profile</th>
+    <th>age</th>
+    <th>phone number</th>
+    <% users.forEach(function(user) { %>
+    <tr>
+        <td> <%= user.firstName + " " + user.lastName %> </td>
+        <td> <%= user.photoProfile %> </td>
+        <td> <%= user.age %> </td>
+        <td> <%= user.phoneNumber %> </td>
+    </tr>
+    <% }); %>
+</table>

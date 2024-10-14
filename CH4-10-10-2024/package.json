@@ -19,6 +19,7 @@
   "homepage": "https://github.com/haikalnuril/24001183-km7-hai-bcr-ch3#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.0",
     "imagekit": "^5.2.0",
     "morgan": "^1.10.0",
