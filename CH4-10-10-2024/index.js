@@ -6,6 +6,7 @@ const sparepartsRoute = require("./routes/sparepartsRoute");
 const driverRoutes = require("./routes/driverRoute");
 const adminRoutes = require("./routes/adminRoute");
 const dotenv = require("dotenv");
+const EJSLayouts = require("express-ejs-layouts");
 dotenv.config();
 
 const app = express();
@@ -38,6 +39,8 @@ app.use(express.static(`${__dirname}/public`));
 
 // View Engine
 app.set("view engine", "ejs");
+app.use(EJSLayouts);
+app.set("layout", "layouts/main");
 // app.get("/dashboard/admin", async (req, res) => {
 //     try {
 //     const response = await fetch("http://localhost:3000/api/v1/users");
