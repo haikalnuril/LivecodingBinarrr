@@ -1,14 +1,15 @@
-const {Op} = require("sequelize")
+const { Op } = require("sequelize");
 const { Shops, Products, Users } = require("../models");
 
 const createShop = async (req, res) => {
-    const { name, adminEmail, userId } = req.body;
+    const { name, adminEmail } = req.body;
+    const { id } = req.user;
 
     try {
         const newShop = await Shops.create({
             name,
             adminEmail,
-            userId,
+            userId: id,
         });
 
         res.status(201).json({
@@ -49,20 +50,21 @@ const createShop = async (req, res) => {
 
 const getAllShop = async (req, res) => {
     try {
-        const { shopName, userId, productName, stock, limit, page } = req.query
+        const { shopName, userId, productName, stock, limit, page } = req.query;
 
-        const condition = {}
-        if(shopName) condition.name = { [Op.iLike]: `%${shopName}%` }
+        const condition = {};
+        if (shopName) condition.name = { [Op.iLike]: `%${shopName}%` };
 
-        const productCondition = {}
-        if(productName) productCondition.name = {[Op.iLike]: `%${productName}%`}
-        if(stock) productCondition.stock = { [Op.gte]: stock }
+        const productCondition = {};
+        if (productName)
+            productCondition.name = { [Op.iLike]: `%${productName}%` };
+        if (stock) productCondition.stock = { [Op.gte]: stock };
 
-        let limitPage = 3
-        if(limit) limitPage = limit
+        let limitPage = 3;
+        if (limit) limitPage = limit;
 
-        let pageNumber = 0
-        if(page) pageNumber = (page*limitPage)-limitPage
+        let pageNumber = 0;
+        if (page) pageNumber = page * limitPage - limitPage;
 
         const shops = await Shops.findAll({
             include: [
@@ -70,18 +72,18 @@ const getAllShop = async (req, res) => {
                     model: Products,
                     as: "products",
                     attributes: ["name", "images", "stock"],
-                    where: productCondition
+                    where: productCondition,
                 },
                 {
                     model: Users,
                     as: "user",
-                    attributes: ["name"]
+                    attributes: ["name"],
                 },
             ],
             attributes: ["name", "adminEmail"],
             where: condition,
             limit: limitPage,
-            offset:pageNumber
+            offset: pageNumber,
         });
 
         res.status(200).json({
