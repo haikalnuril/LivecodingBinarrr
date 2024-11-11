@@ -1,40 +1,47 @@
-import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import AboutView from './page/AboutView'
-import HomeView from './page/HomeView'
-import NotFoundView from './page/NotFoundView'
-import { LoginPage } from './page/LoginPage'
-import { RegisterPage } from './page/RegisterPage'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AboutView from "./pages/AboutView";
+import HomeView from "./pages/HomeView";
+import NotFoundView from "./pages/NotFoundView";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import FormatLayout from "./components/Layouts/FormatLayout";
+import { loader as HomeLoader } from "./pages/HomeView";
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomeView />
-  },
-  {
-    path: '/about',
-    element: <AboutView />
-  },
-  {
-    path: '/not-found',
-    element: <NotFoundView />
-  },
-  {
-    path: '/login',
-    element: <LoginPage />
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />
-  }
-])
+    {
+        path: "/",
+        element: <FormatLayout />,
+        children: [
+            {
+                index: true,
+                element: <HomeView />,
+                loader: HomeLoader,
+            },
+            {
+                path: "about",
+                element: <AboutView />,
+            },
+            {
+                path: "not-found",
+                element: <NotFoundView />,
+            },
+        ],
+    },
+    {},
+    {},
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/register",
+        element: <Register />,
+    },
+]);
 
 function App() {
-  return (
-    <RouterProvider router={router}/>
-  )
+    return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
