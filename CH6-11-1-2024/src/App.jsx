@@ -23,13 +23,11 @@ const router = createBrowserRouter([
                 element: <AboutView />,
             },
             {
-                path: "not-found",
+                path: "*",
                 element: <NotFoundView />,
             },
         ],
     },
-    {},
-    {},
     {
         path: "/login",
         element: <Login />,

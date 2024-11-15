@@ -5,11 +5,16 @@ import { BsCart3 } from "react-icons/bs";
 import { Si4Chan } from "react-icons/si";
 import { FaBars } from "react-icons/fa6";
 
+const logoutHandler = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+}
+
 const Nav = () => {
     return (
         <>
             <nav className="bg-base-200">
-                <div className="navbar mx-auto max-w-6xl px-8 lg:px-0">
+                <div className="navbar mx-auto w-full px-8 lg:px-0">
                     <div className="navbar-start">
                         <NavLink
                             to="/"
@@ -42,6 +47,7 @@ const Nav = () => {
                                 </span>
                             </div>
                         </NavLink>
+                        <button className="btn btn-secondary ml-5" onClick={logoutHandler}>Logout</button>
                     </div>
                 </div>
             </nav>

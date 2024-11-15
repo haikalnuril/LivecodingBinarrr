@@ -2,6 +2,7 @@ import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Filter from "../components/Filter";
+import axiosInstance from "../api/axiosInstance";
 
 export const loader = async ({ request }) => {
     const params = Object.fromEntries([
@@ -9,7 +10,7 @@ export const loader = async ({ request }) => {
     ]);
     const token = localStorage.getItem("token")
 
-    const { data } = await axios.get("http://localhost:3000/api/v1/shops", { params: params, headers: { Authorization: `Bearer ${token}` } });
+    const { data } = await axiosInstance.get("/shops", { params: params, headers: { Authorization: `Bearer ${token}` } });
     const shops = data.data.shops;
     console.log(shops);
     

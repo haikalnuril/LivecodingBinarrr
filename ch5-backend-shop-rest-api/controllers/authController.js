@@ -52,6 +52,7 @@ const login = async (req, res, next) => {
 
             return res.status(200).json({
                 status: "Success",
+                isSuccess: true,
                 message: "Berhasil login",
                 data: {
                     token,

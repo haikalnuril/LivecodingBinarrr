@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axiosInstance from "../../api/axiosInstance";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -13,8 +15,8 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-                "http://localhost:3000/api/v1/auth/login",
+            const response = await axiosInstance.post(
+                "/auth/login",
                 {
                     email,
                     password,
@@ -24,15 +26,18 @@ const Login = () => {
             console.log(response.data);
             if (response.data.isSuccess) {
                 const token = response.data.data.token;
-                const username = response.data.data.username;
+                const username = response.data.data.user.email;
 
                 localStorage.setItem("token", token);
                 localStorage.setItem("username", username);
+                console.log("Login successful");
             }
+            toast.success("Login successful");
 
             navigate("/");
         } catch (error) {
-            console.log(error);
+            const errorMessage = error?.response?.data?.message || "An error occured";
+            toast.error(errorMessage);
         }
     };
 

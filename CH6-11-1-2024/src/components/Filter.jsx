@@ -9,7 +9,7 @@ const Filter = () => {
     return (
         <Form
             method="get"
-            className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-3 grid-cols-3 items-center"
+            className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-3 grid-cols-3 mb-5 items-center"
         >
             <FormInput
                 label="Shop Name"
